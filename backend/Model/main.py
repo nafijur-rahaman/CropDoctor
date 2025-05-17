@@ -4,8 +4,8 @@ from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 import os
 
 # Paths to your dataset folders
-train_dir = r"A:\Others\SDP-SPRING 2025\Project Notes\plantvillage dataset\color\train"
-test_dir = r"A:\Others\SDP-SPRING 2025\Project Notes\plantvillage dataset\color\test"
+train_dir = r"E:\SDP-2025\Dataset\plantvillage dataset\color\train"
+test_dir = r"E:\SDP-2025\Dataset\plantvillage dataset\color\test"
 
 # Parameters
 batch_size = 32

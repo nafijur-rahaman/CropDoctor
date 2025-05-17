@@ -1,7 +1,7 @@
 # Core ML / DL libs
 tensorflow==2.19.0
 keras==3.9.2
-numpy==1.24.4
+numpy==1.26.4
 h5py==3.13.0
 pillow==11.2.1
 opencv-python==4.7.0.72
