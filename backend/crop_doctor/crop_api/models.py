@@ -34,7 +34,6 @@ class Solution(models.Model):
     treatment_type = models.CharField(max_length=100, choices=[
         ('organic', 'Organic'),
         ('chemical', 'Chemical'),
-        ('preventive', 'Preventive'),
     ])
     product_name = models.CharField(max_length=100, blank=True, null=True, help_text="Optional product name, e.g., 'Mancozeb'")
     application_instructions = models.TextField(blank=True, null=True, help_text="How to use the product or solution.")
