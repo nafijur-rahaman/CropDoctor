@@ -11,7 +11,7 @@ from .models import DiseaseSolution
 
 
 # Path to the model and class indices
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'models', 'image_classifier.keras')
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'models', 'image_classifier_mobilenetv2_finetuned.keras')
 JSON_PATH = os.path.join(settings.BASE_DIR, 'models', 'class_indices.json')
 
 # Load the model and label map
