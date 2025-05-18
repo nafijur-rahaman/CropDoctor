@@ -124,6 +124,18 @@ class PredictDiseaseView(APIView):
             "solutions": []
         }
 
+        # If disease is healthy, skip DB query and return custom message
+        if disease_name.strip().lower() == "healthy":
+            disease_data["solutions"].append({
+                "solution_text": f"The {plant_name} plant appears to be healthy. Keep monitoring and maintain good care!",
+                "treatment_type": "none",
+                "product_name": None,
+                "application_instructions": None,
+                "video_url": None,
+            })
+            return Response(disease_data)
+
+        # For non-healthy diseases, query DB for treatment info
         try:
             disease_obj = Disease.objects.select_related('plant').prefetch_related('solutions').get(
                 plant__name__iexact=plant_name,
@@ -138,6 +150,13 @@ class PredictDiseaseView(APIView):
                     "video_url": sol.video_url,
                 })
         except Disease.DoesNotExist:
-            disease_data["solutions"].append({"solution_text": "No treatment found in database."})
+            disease_data["solutions"].append({
+                "solution_text": "No treatment found in database.",
+                "treatment_type": None,
+                "product_name": None,
+                "application_instructions": None,
+                "video_url": None,
+            })
 
         return Response(disease_data)
+
