@@ -38,13 +38,13 @@ class SolutionListView(generics.ListAPIView):
 
 
 
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'models', 'image_classifier_mobilenetv2_finetuned.keras')
-JSON_PATH = os.path.join(settings.BASE_DIR, 'models', 'class_indices.json')
+# MODEL_PATH = os.path.join(settings.BASE_DIR, 'models', 'image_classifier_mobilenetv2_finetuned.keras')
+# JSON_PATH = os.path.join(settings.BASE_DIR, 'models', 'class_indices.json')
 
-model = load_model(MODEL_PATH)
-with open(JSON_PATH) as f:
-    class_indices = json.load(f)
-index_to_label = {v: k for k, v in class_indices.items()}
+# model = load_model(MODEL_PATH)
+# with open(JSON_PATH) as f:
+#     class_indices = json.load(f)
+# index_to_label = {v: k for k, v in class_indices.items()}
 
 MULTI_WORD_PLANTS = {
     "Pepper bell",
@@ -76,7 +76,27 @@ def parse_label(label):
 class PredictDiseaseView(APIView):
     parser_classes = [MultiPartParser]
 
+    model = None
+    index_to_label = None
+
+    def load_model_and_labels(self):
+        if self.model is None:
+            from tensorflow.keras.models import load_model
+            import json
+            import os
+            from django.conf import settings
+
+            MODEL_PATH = os.path.join(settings.BASE_DIR, 'models', 'image_classifier_mobilenetv2_finetuned.keras')
+            JSON_PATH = os.path.join(settings.BASE_DIR, 'models', 'class_indices.json')
+
+            self.model = load_model(MODEL_PATH)
+            with open(JSON_PATH) as f:
+                class_indices = json.load(f)
+            self.index_to_label = {v: k for k, v in class_indices.items()}
+
     def post(self, request):
+        self.load_model_and_labels()  # Load model at first request
+
         file_obj = request.FILES.get('image')
         if not file_obj:
             return Response({"error": "No image provided"}, status=400)
@@ -89,10 +109,10 @@ class PredictDiseaseView(APIView):
         img_array = np.array(image) / 255.0
         img_array = img_array.reshape(1, 128, 128, 3)
 
-        prediction = model.predict(img_array)
+        prediction = self.model.predict(img_array)
         predicted_class = int(np.argmax(prediction))
         confidence = float(np.max(prediction)) * 100
-        label = index_to_label.get(predicted_class, "Unknown")
+        label = self.index_to_label.get(predicted_class, "Unknown")
 
         plant_name, disease_name = parse_label(label)
 
