@@ -11,7 +11,7 @@ import tempfile
 # ---------- App Setup ----------
 root = TkinterDnD.Tk()
 root.attributes('-fullscreen', True)
-root.title("Plant Disease Predictor")
+root.title("CropDoctor")
 root.geometry("600x600")
 root.configure(bg="#f9f9f9")
 
@@ -202,7 +202,7 @@ def styled_button(master, text, command):
 
 # ---------- UI Layout ----------
 
-title_label = tk.Label(root, text="🌿 Plant Disease Predictor", font=("Segoe UI", 18, "bold"), bg="#f9f9f9")
+title_label = tk.Label(root, text="🌿 CropDoctor", font=("Segoe UI", 18, "bold"), bg="#f9f9f9")
 title_label.pack(pady=10)
 
 drop_area = tk.Label(
