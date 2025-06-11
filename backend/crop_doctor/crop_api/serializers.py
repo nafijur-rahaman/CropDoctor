@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Plant, Disease, Solution
+from .models import Plant, Disease, Solution, DetectionHistoryModel
 
 
 class SolutionSerializer(serializers.ModelSerializer):
@@ -44,3 +44,19 @@ class PlantSerializer(serializers.ModelSerializer):
             'name',
             'diseases'
         ]
+
+
+class DetectionHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetectionHistoryModel
+        fields = [
+            'id',
+            'user',
+            'label',
+            'confidence',
+            'image',
+            'plant_name',
+            'disease_name',
+            'detected_at'
+        ]
+        read_only_fields = ['user', 'detected_at']

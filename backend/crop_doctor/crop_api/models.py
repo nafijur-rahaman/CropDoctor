@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from django.contrib.auth.models import User
 
 class Plant(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -47,3 +47,21 @@ class Solution(models.Model):
 
     def __str__(self):
         return f"Solution for {self.disease.name} ({self.treatment_type})"
+
+
+
+class DetectionHistoryModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    label = models.CharField(max_length=255)
+    confidence = models.FloatField()
+    image= models.ImageField(upload_to='detection_images/')
+    plant_name = models.CharField(max_length=255)
+    disease_name = models.CharField(max_length=255)
+    detected_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.plant_name} - {self.disease_name} ({self.label}) at {self.detected_at.strftime('%Y-%m-%d %H:%M:%S')}"
+    
+    
+    
+    

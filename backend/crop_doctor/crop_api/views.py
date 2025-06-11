@@ -7,9 +7,11 @@ from PIL import Image
 import json
 import os
 from django.conf import settings
+from rest_framework import status
 from rest_framework import generics
-from .models import Plant, Disease, Solution
-from .serializers import PlantSerializer, DiseaseSerializer, SolutionSerializer
+from .models import Plant, Disease, Solution,DetectionHistoryModel
+from .serializers import PlantSerializer, DiseaseSerializer, SolutionSerializer,DetectionHistorySerializer
+
 
 
 # List all plants and their diseases
@@ -38,13 +40,6 @@ class SolutionListView(generics.ListAPIView):
 
 
 
-# MODEL_PATH = os.path.join(settings.BASE_DIR, 'models', 'image_classifier_mobilenetv2_finetuned.keras')
-# JSON_PATH = os.path.join(settings.BASE_DIR, 'models', 'class_indices.json')
-
-# model = load_model(MODEL_PATH)
-# with open(JSON_PATH) as f:
-#     class_indices = json.load(f)
-# index_to_label = {v: k for k, v in class_indices.items()}
 
 MULTI_WORD_PLANTS = {
     "Pepper bell",
@@ -81,10 +76,7 @@ class PredictDiseaseView(APIView):
 
     def load_model_and_labels(self):
         if self.model is None:
-            from tensorflow.keras.models import load_model
-            import json
-            import os
-            from django.conf import settings
+
 
             MODEL_PATH = os.path.join(settings.BASE_DIR, 'models', 'image_classifier_mobilenetv2_finetuned.keras')
             JSON_PATH = os.path.join(settings.BASE_DIR, 'models', 'class_indices.json')
@@ -160,3 +152,92 @@ class PredictDiseaseView(APIView):
 
         return Response(disease_data)
 
+
+
+class SaveDetectionHistoryView(APIView):
+
+    def post(self, request):
+        user = request.user
+        label = request.data.get('label')
+        confidence = request.data.get('confidence')
+        image = request.FILES.get('image')
+        plant_name = request.data.get('plant_name')
+        disease_name = request.data.get('disease_name')
+
+        if not all([label, confidence, image, plant_name, disease_name]):
+            return Response({
+                "success": False,
+                "message": "All fields are required",
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        detection_history = DetectionHistoryModel.objects.create(
+            user=user,
+            label=label,
+            confidence=confidence,
+            image=image,
+            plant_name=plant_name,
+            disease_name=disease_name
+        )
+
+        serializer = DetectionHistorySerializer(detection_history)
+        return Response(
+            {
+                "success": True,
+                "message": "Detection history saved successfully",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED
+        )
+
+
+
+
+class GetDetectionHistoryView(APIView):
+    
+    def get(self, request):
+        user = request.user
+        history = DetectionHistoryModel.objects.filter(user=user).order_by('-detected_at')
+        serializer = DetectionHistorySerializer(history, many=True)
+        return Response({
+            "success": True,
+            "data": serializer.data
+            
+        }, status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        id= request.query_params.get('id')
+        if id:
+            try:
+                detection_history = DetectionHistoryModel.objects.get(id=id, user=request.user)
+                detection_history.delete()
+                return Response({
+                    "success": True,
+                    "message": "Detection history deleted successfully"
+                }, status=status.HTTP_204_NO_CONTENT)
+            except DetectionHistoryModel.DoesNotExist:
+                return Response({
+                    "success": False,
+                    "message": "Detection history not found"
+                }, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({
+                "success": False,
+                "message": "ID parameter is required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+            
+            
+class GetDetectionHistoryByIdView(APIView):
+    def get(self, request, id):
+        try:
+            detection_history = DetectionHistoryModel.objects.get(id=id, user=request.user)
+            serializer = DetectionHistorySerializer(detection_history)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        except DetectionHistoryModel.DoesNotExist:
+            return Response({
+                "success": False,
+                "message": "Detection history not found"
+            }, status=status.HTTP_404_NOT_FOUND)
+            
