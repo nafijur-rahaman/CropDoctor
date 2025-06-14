@@ -8,13 +8,18 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
     const userId = localStorage.getItem("userId");
-    return token ? { token, username, userId } : null;
+    const image = localStorage.getItem("userImage");
+    return token ? { token, username, userId,image } : null;
   });
 
   const login = (data) => {
+
+    console.log(data);
     localStorage.setItem("token", data.token);
     localStorage.setItem("username", data.username);
     localStorage.setItem("userId", data.userId);
+    localStorage.setItem("userImage", data.image);
+    
     setAuth(data);
   };
 

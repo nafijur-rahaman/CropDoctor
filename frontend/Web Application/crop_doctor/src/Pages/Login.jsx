@@ -21,6 +21,7 @@ const Login = () => {
           token: res.data.token,
           username: res.data.username,
           userId: res.data.userId,
+          image: res.data.image
         });
         navigate("/");
       }

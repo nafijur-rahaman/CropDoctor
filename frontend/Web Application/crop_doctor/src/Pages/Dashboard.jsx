@@ -1,46 +1,52 @@
+import { NavLink, Outlet, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
 
-const Dashboard = () => {
-  const { auth, logout } = useAuth();
+export default function DashboardLayout() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  useEffect(() => {
-    if (!auth) navigate("/login");
-  }, [auth, navigate]);
+  const menu = [
+    { name: "Profile", to: "/dashboard/profile" },
+    { name: "Update Profile", to: "/dashboard/update-profile" },
+    { name: "Change Password", to: "/dashboard/change-password" },
+    { name: "Detection History", to: "/dashboard/detection-history" },
+  ];
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-3xl font-bold mb-4">Welcome, {auth?.username} 👋</h1>
+    <div className="min-h-screen flex bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-lg p-6">
+        <h2 className="text-2xl font-bold mb-8 text-green-600">Dashboard</h2>
+        <nav className="flex flex-col gap-4">
+          {menu.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `block px-4 py-2 rounded hover:bg-green-100 text-lg ${
+                  isActive ? "bg-green-200 font-semibold" : ""
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
+          <button
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
+            className="text-left text-lg px-4 py-2 rounded hover:bg-red-100 text-red-600"
+          >
+            Logout
+          </button>
+        </nav>
+      </div>
 
-      <div className="flex flex-col gap-4 mt-6">
-        <button
-          className="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700"
-          onClick={() => navigate("/add-disease")}
-        >
-          ➕ Add New Disease Report
-        </button>
-
-        <button
-          className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={() => navigate("/my-reports")}
-        >
-          📄 View My Reports
-        </button>
-
-        <button
-          className="px-6 py-3 bg-red-600 text-white rounded hover:bg-red-700"
-          onClick={() => {
-            logout();
-            navigate("/login");
-          }}
-        >
-          🚪 Logout
-        </button>
+      {/* Main content */}
+      <div className="flex-1 p-8">
+        <Outlet />
       </div>
     </div>
   );
-};
-
-export default Dashboard;
+}

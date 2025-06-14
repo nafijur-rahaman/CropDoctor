@@ -122,7 +122,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = '/detection_images/'
-MEDIA_ROOT = BASE_DIR / 'detection_images'  # adjust path
+MEDIA_ROOT = BASE_DIR # adjust path
 
 
 # Default primary key field type

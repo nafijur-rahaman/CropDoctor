@@ -203,9 +203,8 @@ class GetDetectionHistoryView(APIView):
             
         }, status=status.HTTP_200_OK)
 
-    def delete(self, request):
-        id= request.query_params.get('id')
-        if id:
+    def delete(self, request,id):
+  
             try:
                 detection_history = DetectionHistoryModel.objects.get(id=id, user=request.user)
                 detection_history.delete()
@@ -218,11 +217,7 @@ class GetDetectionHistoryView(APIView):
                     "success": False,
                     "message": "Detection history not found"
                 }, status=status.HTTP_404_NOT_FOUND)
-        else:
-            return Response({
-                "success": False,
-                "message": "ID parameter is required"
-            }, status=status.HTTP_400_BAD_REQUEST)
+
             
             
             

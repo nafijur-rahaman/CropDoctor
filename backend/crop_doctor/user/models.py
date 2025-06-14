@@ -15,3 +15,7 @@ class Profile(models.Model):
         return f'{self.user.username} Profile'
 
 
+class ReviewModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.TextField()
+    

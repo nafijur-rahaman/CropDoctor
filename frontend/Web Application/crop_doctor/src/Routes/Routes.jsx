@@ -1,7 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import Root from "../Root/Root";
 import Home from "../Pages/Home";
 import CropDetectionPage from "../Pages/CropDetectionPage";
@@ -11,57 +8,70 @@ import Signup from "../Pages/Signup";
 import PrivateRoute from "../Components/PrivateRoute";
 import Dashboard from "../Pages/Dashboard";
 import HistoryPage from "../Pages/HistoryPage";
-
-
-
-
+import Profile from "../Components/Profile";
+import UpdateProfile from "../Components/UpdateProfile";
+import ChangePassword from "../Components/ChnagePassword";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component:Root,
-    children:[
+    Component: Root,
+    children: [
       {
-        path:"/",
-        Component:Home
+        path: "/",
+        Component: Home,
       },
       {
-        path:"/detect",
-        Component:CropDetectionPage
+        path: "/detect",
+        Component: CropDetectionPage,
       },
       {
-        path:"/diseases",
-        Component: () =>(
+        path: "/diseases",
+        Component: () => (
           <PrivateRoute>
-            <DiseaseLibrary/>
+            <DiseaseLibrary />
           </PrivateRoute>
-        )
+        ),
       },
       {
-  path: "/dashboard",
-  Component: () => (
-    <PrivateRoute>
-      <Dashboard/>
-    </PrivateRoute>
-  )
-},
-      {
-  path: "/detection-history",
-  Component: () => (
-    <PrivateRoute>
-      <HistoryPage/>
-    </PrivateRoute>
-  )
-},
-      {
-        path:"/signup",
-        Component:Signup
+        path: "/dashboard",
+        Component: () => (
+          <PrivateRoute>
+            <Dashboard />  {/* This could be a layout for dashboard pages */}
+          </PrivateRoute>
+        ),
+        children: [
+          {
+            index: true, // default child route for /dashboard
+            Component:Profile, // or you can reuse Dashboard if it’s your main dashboard page
+          },
+          {
+            path: "profile",
+            Component: Profile,
+          },
+          {
+            path: "update-profile",
+            Component: UpdateProfile,
+          },
+          {
+            path: "detection-history",
+            Component: HistoryPage,
+          },
+          {
+            path:"change-password",
+            Component: ChangePassword
+          }
+        ],
       },
       {
-        path:"/login",
-        Component:Login
-      }
-      
-    ]
+        path: "/signup",
+        Component: Signup,
+      },
+      {
+        path: "/login",
+        Component: Login,
+      },
+    ],
   },
 ]);
+

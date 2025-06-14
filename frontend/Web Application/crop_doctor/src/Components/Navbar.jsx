@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
@@ -17,34 +17,48 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="text-2xl font-bold text-green-700">
-              🌾 AgriDetect
+              🌾 CropDoctor
             </Link>
           </div>
 
           {/* Nav Links */}
           <div className="hidden md:flex space-x-6">
-            <Link
+            <NavLink
               to="/"
-              className="text-gray-700 hover:text-green-700 font-medium"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-green-700 font-semibold"
+                  : "text-gray-700 hover:text-green-700 font-medium"
+              }
             >
               Home
-            </Link>
-            <Link
+            </NavLink>
+
+            <NavLink
               to="/detect"
-              className="text-gray-700 hover:text-green-700 font-medium"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-green-700 font-semibold"
+                  : "text-gray-700 hover:text-green-700 font-medium"
+              }
             >
               Crop Detection
-            </Link>
-            <Link
+            </NavLink>
+
+            <NavLink
               to="/diseases"
-              className="text-gray-700 hover:text-green-700 font-medium"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-green-700 font-semibold"
+                  : "text-gray-700 hover:text-green-700 font-medium"
+              }
             >
               Disease Library
-            </Link>
+            </NavLink>
           </div>
 
           {/* Auth Buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-center space-x-4">
             {!auth ? (
               <>
                 <Link
@@ -62,13 +76,18 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <span className="text-gray-700 text-sm font-medium">
-                  👋 {auth.username}
+                <img
+                  src={`http://127.0.0.1:8000${auth.image}`}
+                  alt="User"
+                  className="w-10 h-10 rounded-full object-cover border"
+                />
+                <span className="text-gray-700 text-lg font-semibold">
+                  {auth.username}
                 </span>
 
                 <Link
                   to="/dashboard"
-                  className="text-black hover:text-green-300"
+                  className="text-black font-semibold hover:text-green-600"
                 >
                   Dashboard
                 </Link>

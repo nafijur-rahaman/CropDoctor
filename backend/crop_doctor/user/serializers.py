@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .models import Profile
+from .models import Profile, ReviewModel
 
         
 
@@ -82,3 +82,7 @@ class UserChangePasswordSerializer(serializers.Serializer):
         
         
     
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewModel
+        fields = ['user', 'review']

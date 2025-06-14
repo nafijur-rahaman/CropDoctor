@@ -10,6 +10,7 @@ urlpatterns = [
     path('solutions/', SolutionListView.as_view(), name='solution-list'),
     
     path('detection-history/', GetDetectionHistoryView.as_view(), name='detection-history'),
+    path('detection-delete/<int:id>/', GetDetectionHistoryView.as_view(), name='detection-history-delete'),
     path('detection-history/<int:id>/', GetDetectionHistoryByIdView.as_view(), name='detection-history-by-id'),
     path('save-detection-history/', SaveDetectionHistoryView.as_view(), name='save-detection-history'),
     

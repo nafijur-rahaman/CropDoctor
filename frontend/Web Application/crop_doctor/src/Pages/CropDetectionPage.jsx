@@ -7,7 +7,8 @@ export default function CropDetectionPage() {
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const {auth}= useAuth()
+  const { auth } = useAuth();
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -17,7 +18,7 @@ export default function CropDetectionPage() {
     }
   };
 
-const handleSubmit = async () => {
+  const handleSubmit = async () => {
     if (!image) return;
 
     const formData = new FormData();
@@ -26,11 +27,11 @@ const handleSubmit = async () => {
     try {
       setLoading(true);
 
-      // First: Predict
+      // Predict
       const res = await axios.post('http://127.0.0.1:8000/api/predict/', formData);
       setResult(res.data);
 
-      // Then: If logged in, save result
+      // Save result if logged in
       if (auth?.token) {
         const saveForm = new FormData();
         saveForm.append('image', image);
@@ -55,72 +56,82 @@ const handleSubmit = async () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
-        <h1 className="text-3xl font-bold text-green-700 mb-4 text-center">🌾 Crop Disease Detection</h1>
+      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 className="text-3xl font-bold text-green-700 mb-8 text-center">🌾 Crop Disease Detection</h1>
 
-        <div className="flex flex-col items-center gap-4">
-          {/* Image Upload */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="mb-4"
-          />
-
-          {/* Preview */}
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              className="w-64 h-64 object-cover rounded-md border"
+        {/* Main container: left side input & preview, right side result */}
+        <div className="flex flex-col md:flex-row gap-8">
+          
+          {/* Left side: Input + Preview + Button */}
+          <div className="md:w-1/2 flex flex-col items-center">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mb-6 bg-gray-50 border border-gray-300 hover:bg-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 cursor-pointer"
             />
-          )}
 
-          {/* Submit Button */}
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded mt-4 shadow disabled:opacity-50"
-          >
-            {loading ? 'Detecting...' : 'Detect Disease'}
-          </button>
-        </div>
+            {preview ? (
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-64 h-64 object-cover rounded-md border"
+              />
+            ) : (
+              <div className="w-64 h-64 flex items-center justify-center bg-gray-200 rounded-md border text-gray-500">
+                No Image Selected
+              </div>
+            )}
 
-        {/* Result Display */}
-        {result && (
-          <div className="mt-8 border-t pt-6">
-            <h2 className="text-xl font-semibold text-green-700 mb-2">🧪 Result</h2>
-            <p><strong>Label:</strong> {result.label}</p>
-            <p><strong>Confidence:</strong> {result.confidence}%</p>
-            <p><strong>Plant:</strong> {result.plant_name}</p>
-            <p><strong>Disease:</strong> {result.disease_name}</p>
-
-            {/* Solutions */}
-            <div className="mt-4">
-              <h3 className="text-lg font-medium mb-2">Treatment Solutions:</h3>
-              {result.solutions.map((sol, idx) => (
-                <div key={idx} className="bg-gray-100 p-4 mb-3 rounded-md border-l-4 border-green-500">
-                  <p className="mb-1"><strong>Type:</strong> {sol.treatment_type || 'N/A'}</p>
-                  <p className="mb-1"><strong>Solution:</strong> {sol.solution_text}</p>
-                  {sol.product_name && <p><strong>Product:</strong> {sol.product_name}</p>}
-                  {sol.application_instructions && (
-                    <p><strong>Instructions:</strong> {sol.application_instructions}</p>
-                  )}
-                  {sol.video_url && (
-                    <a
-                      href={sol.video_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-blue-600 underline"
-                    >
-                      Watch Video
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
+            <button
+              onClick={handleSubmit}
+              disabled={loading || !image}
+              className="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow disabled:opacity-50"
+            >
+              {loading ? 'Detecting...' : 'Detect Disease'}
+            </button>
           </div>
-        )}
+
+          {/* Right side: Result display */}
+          <div className="md:w-1/2">
+            {result ? (
+              <>
+                <h2 className="text-xl font-semibold text-green-700 mb-4">🧪 Result</h2>
+                <p><strong>Label:</strong> {result.label}</p>
+                <p><strong>Confidence:</strong> {result.confidence}%</p>
+                <p><strong>Plant:</strong> {result.plant_name}</p>
+                <p><strong>Disease:</strong> {result.disease_name}</p>
+
+                <div className="mt-6">
+                  <h3 className="text-lg font-medium mb-3">Treatment Solutions:</h3>
+                  {result.solutions.map((sol, idx) => (
+                    <div key={idx} className="bg-gray-100 p-4 mb-3 rounded-md border-l-4 border-green-500">
+                      <p className="mb-1"><strong>Type:</strong> {sol.treatment_type || 'N/A'}</p>
+                      <p className="mb-1"><strong>Solution:</strong> {sol.solution_text}</p>
+                      {sol.product_name && <p><strong>Product:</strong> {sol.product_name}</p>}
+                      {sol.application_instructions && <p><strong>Instructions:</strong> {sol.application_instructions}</p>}
+                      {sol.video_url && (
+                        <a
+                          href={sol.video_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-blue-600 underline"
+                        >
+                          Watch Video
+                        </a>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-gray-500 italic text-center mt-20">
+                No result to show. Please upload an image and click "Detect Disease".
+              </div>
+            )}
+          </div>
+
+        </div>
       </div>
     </div>
   );

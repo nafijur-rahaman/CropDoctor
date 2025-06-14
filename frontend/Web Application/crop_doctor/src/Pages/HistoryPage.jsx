@@ -23,7 +23,7 @@ export default function HistoryPage() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this record?')) return;
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/detection-history/${id}/`, {
+      await axios.delete(`http://127.0.0.1:8000/api/detection-delete/${id}/`, {
         headers: { Authorization: `Token ${auth.token}` },
       });
       setHistory(history.filter(item => item.id !== id));
