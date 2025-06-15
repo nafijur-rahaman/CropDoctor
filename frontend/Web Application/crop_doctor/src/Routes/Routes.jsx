@@ -12,6 +12,7 @@ import Profile from "../Components/Profile";
 import UpdateProfile from "../Components/UpdateProfile";
 import ChangePassword from "../Components/ChnagePassword";
 import AboutPage from "../Pages/AboutPage";
+import NotFoundPage from "../Pages/NotFoundPage";
 
 export const router = createBrowserRouter([
   {
@@ -75,7 +76,12 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         Component: AboutPage
-      }
+      },
+        {
+        path: "*",
+        Component: NotFoundPage,
+      },
+
     ],
   },
 ]);
