@@ -42,7 +42,7 @@ const Navbar = () => {
                   : "text-gray-700 hover:text-green-700 font-medium"
               }
             >
-              Crop Detection
+              Disease Detection
             </NavLink>
 
             <NavLink
