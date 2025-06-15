@@ -13,7 +13,7 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl font-extrabold mb-4 text-green-700"
           >
-            🌱 Welcome to CropDoctor
+            Welcome to CropDoctor
           </motion.h1>
           <p className="text-xl text-gray-700 mb-8">
             Detect crop diseases in real-time using AI. Stay ahead, protect your plants.

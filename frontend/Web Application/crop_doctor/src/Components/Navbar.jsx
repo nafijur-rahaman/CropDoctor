@@ -55,6 +55,17 @@ const Navbar = () => {
             >
               Disease Library
             </NavLink>
+
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-green-700 font-semibold"
+                  : "text-gray-700 hover:text-green-700 font-medium"
+              }
+            >
+              About
+            </NavLink>
           </div>
 
           {/* Auth Buttons */}

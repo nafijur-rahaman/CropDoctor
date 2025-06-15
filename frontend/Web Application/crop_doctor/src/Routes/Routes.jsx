@@ -11,6 +11,7 @@ import HistoryPage from "../Pages/HistoryPage";
 import Profile from "../Components/Profile";
 import UpdateProfile from "../Components/UpdateProfile";
 import ChangePassword from "../Components/ChnagePassword";
+import AboutPage from "../Pages/AboutPage";
 
 export const router = createBrowserRouter([
   {
@@ -37,13 +38,13 @@ export const router = createBrowserRouter([
         path: "/dashboard",
         Component: () => (
           <PrivateRoute>
-            <Dashboard />  {/* This could be a layout for dashboard pages */}
+            <Dashboard />  
           </PrivateRoute>
         ),
         children: [
           {
-            index: true, // default child route for /dashboard
-            Component:Profile, // or you can reuse Dashboard if it’s your main dashboard page
+            index: true, 
+            Component:Profile, 
           },
           {
             path: "profile",
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
         path: "/login",
         Component: Login,
       },
+      {
+        path: "/about",
+        Component: AboutPage
+      }
     ],
   },
 ]);
