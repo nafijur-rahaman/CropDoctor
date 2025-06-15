@@ -3,12 +3,12 @@ import React from 'react';
 const teamMembers = [
     {
       name: "Md. Nafijur Rahaman",
-      image: "https://i.pravatar.cc/150?img=3",
+      image: "/nafi.jpg",
     },
 
   {
     name: "Alhanullah Sajib",
-    image: "https://i.pravatar.cc/150?img=1",
+    image: "/sajib.jpg",
   },
   {
     name: "Shad Mohammad",
@@ -20,7 +20,7 @@ const teamMembers = [
   },
   {
     name: "Sadia Afrin Khan",
-    image: "https://i.pravatar.cc/150?img=5",
+    image: "ira.jpeg",
   },
 ];
 
