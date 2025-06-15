@@ -96,12 +96,18 @@ const Navbar = () => {
                   {auth.username}
                 </span>
 
-                <Link
-                  to="/dashboard"
-                  className="text-black font-semibold hover:text-green-600"
-                >
-                  Dashboard
-                </Link>
+
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-green-700 font-semibold"
+                  : "text-gray-700 hover:text-green-700 font-medium"
+              }
+            >
+              Dashboard
+            </NavLink>
+        
 
                 <button
                   onClick={handleLogout}

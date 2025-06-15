@@ -33,7 +33,7 @@ function DiseaseLibrary() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-extrabold mb-6 text-green-700 flex items-center gap-3">
+      <h1 className="text-4xl font-bold mb-6 text-green-700 flex items-center gap-3">
         <FaLeaf /> Disease Library
       </h1>
 

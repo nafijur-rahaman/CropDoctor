@@ -23,7 +23,7 @@ const Home = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
 
         <div className="relative z-10 max-w-4xl px-6 text-center text-white">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg">
             Welcome to <span className="text-green-400">CropDoctor</span>
           </h1>
           <p className="text-xl md:text-2xl font-semibold mb-8 drop-shadow-md">
@@ -42,7 +42,7 @@ const Home = () => {
       {/* Features Section */}
       <section className="py-20 bg-green-50">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-extrabold text-center text-green-700 mb-16 drop-shadow-sm">
+          <h2 className="text-4xl font-bold text-center text-green-700 mb-16 drop-shadow-sm">
             Why Use CropDoctor?
           </h2>
 

@@ -29,7 +29,7 @@ export default function AboutPage() {
     <div className="bg-gradient-to-br from-green-50 to-white min-h-screen py-16 px-6 sm:px-12">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <h1 className="text-4xl font-extrabold text-green-700 text-center mb-10 drop-shadow-sm">
+        <h1 className="text-4xl font-bold text-green-700 text-center mb-10 drop-shadow-sm">
           About Us
         </h1>
         <p className="text-center text-gray-700 max-w-3xl mx-auto mb-16 text-lg leading-relaxed">
