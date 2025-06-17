@@ -9,7 +9,6 @@ export default function HistoryPage() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch saved detections on mount
   useEffect(() => {
     if (!auth?.token) return;
 
@@ -23,7 +22,7 @@ export default function HistoryPage() {
       .finally(() => setLoading(false));
   }, [auth]);
 
-  // Delete a detection by ID
+
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
@@ -36,7 +35,7 @@ export default function HistoryPage() {
       toast.error("Failed to delete record");
     }
   };
-
+console.log(history);
   if (!auth)
     return (
       <p className="text-center mt-10 text-gray-600">
@@ -66,7 +65,7 @@ export default function HistoryPage() {
           style={{ maxHeight: "600px" }}
         >
           {history.map(
-            ({ id, image, label, confidence, plant_name, disease_name }) => (
+            ({ id, image, label, confidence, plant_name, disease_name, detected_at }) => (
               <div
                 key={id}
                 className="flex items-center border rounded p-4 gap-6 shadow hover:shadow-lg transition-shadow"
@@ -88,6 +87,9 @@ export default function HistoryPage() {
                   </p>
                   <p>
                     <strong>Disease:</strong> {disease_name}
+                  </p>
+                  <p>
+                    <strong>Date: {new Date(detected_at).toLocaleString()} </strong>
                   </p>
                 </div>
                 <button
